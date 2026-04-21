@@ -27,7 +27,7 @@ export default function Header() {
 
         {/* LOGO */}
         <img
-          src="src\img\logo.png"
+          src="/logo.png"
           alt="logo"
           className="h-10 object-contain hover:scale-105 transition"
         />
