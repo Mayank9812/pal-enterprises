@@ -1,12 +1,15 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { fadeUp } from "../animations";
+import img25 from "../img/img25.jpeg";
+import img26 from "../img/img26.jpeg";
+import img27 from "../img/img27.jpeg";
 
 export default function Hero() {
   const images = [
-    "https://images.unsplash.com/photo-1606787366850-de6330128bfc",
-    "https://images.unsplash.com/photo-1600891964599-f61ba0e24092",
-    "https://images.unsplash.com/photo-1506619216599-9d16d0903dfd"
+    img25,
+    img26,
+    img27
   ];
 
   const [index, setIndex] = useState(0);

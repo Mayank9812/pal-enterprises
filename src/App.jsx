@@ -1,29 +1,22 @@
-import Header from "./components/Header";
-import Hero from "./components/Hero";
-import WeCare from "./components/WeCare";
-import Foundation from "./components/Foundation";
-import Vision from "./components/Vision";
-import Mission from "./components/Mission";
-import WhyChooseUs from "./components/WhyChooseUs";
-import Certifications from "./components/Certifications";
-import Commitment from "./components/Commitment";
-import Newsletter from "./components/Newsletter";
-import Footer from "./components/Footer";
+import { Routes, Route } from "react-router-dom";
+
+import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
+import ServicesPage from "./pages/ServicesPage";
+import ContactPage from "./pages/ContactPage";
 
 export default function App() {
   return (
-    <>
-      <Header />
-      <Hero />
-      <WeCare />
-      <Foundation />
-      <Vision />
-      <Mission />
-      <WhyChooseUs />
-      <Certifications />
-      <Commitment />
-      <Newsletter />
-      <Footer />
-    </>
+    <Routes>
+
+      <Route path="/" element={<HomePage />} />
+
+      <Route path="/about" element={<AboutPage />} />
+
+      <Route path="/services" element={<ServicesPage />} />
+
+      <Route path="/contact" element={<ContactPage />} />
+
+    </Routes>
   );
 }
