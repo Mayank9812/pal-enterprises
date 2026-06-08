@@ -9,8 +9,8 @@ import BuyerTrust from "../components/BuyerTrust";
 import IndiaCommodities from "../components/IndiaCommodities";
 import Certifications from "../components/Certifications";
 import Commitment from "../components/Commitment";
-import Newsletter from "../components/Newsletter";
 import Footer from "../components/Footer";
+import RequestQuote from "../components/RequestQuote";
 
 export default function HomePage() {
   return (
@@ -26,7 +26,7 @@ export default function HomePage() {
       <IndiaCommodities />
       <Certifications />
       <Commitment />
-      <Newsletter />
+      <RequestQuote />
       <Footer />
     </>
   );
