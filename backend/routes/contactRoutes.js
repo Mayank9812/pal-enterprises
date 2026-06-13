@@ -6,9 +6,10 @@ const router = express.Router();
 
 router.post("/contact", async (req, res) => {
   try {
+
     const { name, email, message } = req.body;
 
-    // Save to MongoDB
+    // Save in MongoDB
     const contact = await Contact.create({
       name,
       email,
@@ -17,7 +18,6 @@ router.post("/contact", async (req, res) => {
 
     console.log("✅ Contact Saved");
 
-    // Nodemailer
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 587,
@@ -28,21 +28,35 @@ router.post("/contact", async (req, res) => {
       },
     });
 
-    // Send Email
-    await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER,
-      subject: "New Contact Form Submission",
-      html: `
-        <h2>New Inquiry Received</h2>
+    try {
 
-        <p><strong>Name:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Message:</strong> ${message}</p>
-      `,
-    });
+      await transporter.sendMail({
+        from: process.env.EMAIL_USER,
+        to: process.env.EMAIL_USER,
+        subject: "New Contact Form Submission",
 
-    console.log("✅ Email Sent");
+        html: `
+          <h2>New Inquiry Received</h2>
+
+          <p><strong>Name:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Message:</strong> ${message}</p>
+        `,
+      });
+
+      console.log("✅ Email Sent");
+
+    } catch (mailError) {
+
+      console.log("❌ MAIL ERROR");
+      console.log(mailError);
+
+      return res.status(500).json({
+        success: false,
+        message: mailError.message,
+      });
+
+    }
 
     res.status(201).json({
       success: true,
@@ -52,7 +66,7 @@ router.post("/contact", async (req, res) => {
 
   } catch (error) {
 
-    console.log("❌ Contact Route Error");
+    console.log("❌ CONTACT ERROR");
     console.log(error);
 
     res.status(500).json({
