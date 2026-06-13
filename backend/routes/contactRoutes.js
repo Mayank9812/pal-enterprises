@@ -8,41 +8,31 @@ router.post("/contact", async (req, res) => {
   try {
     const { name, email, message } = req.body;
 
-    // Save in MongoDB
+    // Save to MongoDB
     const contact = await Contact.create({
       name,
       email,
       message,
     });
 
-    console.log("Contact Saved");
+    console.log("✅ Contact Saved");
 
-    // Create transporter
+    // Nodemailer
     const transporter = nodemailer.createTransport({
-      service: "gmail",
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
       auth: {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
     });
 
-    console.log("EMAIL_USER:", process.env.EMAIL_USER);
-    console.log(
-      "EMAIL_PASS:",
-      process.env.EMAIL_PASS ? "FOUND" : "MISSING"
-    );
-
-    // Verify SMTP
-    await transporter.verify();
-
-    console.log("✅ SMTP Ready");
-
-    // Send Mail
+    // Send Email
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
       to: process.env.EMAIL_USER,
       subject: "New Contact Form Submission",
-
       html: `
         <h2>New Inquiry Received</h2>
 
@@ -62,7 +52,7 @@ router.post("/contact", async (req, res) => {
 
   } catch (error) {
 
-    console.log("❌ NODEMAILER ERROR");
+    console.log("❌ Contact Route Error");
     console.log(error);
 
     res.status(500).json({
