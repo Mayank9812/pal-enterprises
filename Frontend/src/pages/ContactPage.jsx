@@ -31,7 +31,7 @@ export default function ContactPage() {
       setLoading(true);
 
       const res = await fetch(
-        "http://localhost:5000/api/contact",
+        "https://pal-enterprises.onrender.com/api/contact",
         {
           method: "POST",
           headers: {
