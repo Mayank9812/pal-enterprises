@@ -6,10 +6,9 @@ const router = express.Router();
 
 router.post("/contact", async (req, res) => {
   try {
-
     const { name, email, message } = req.body;
 
-    // Save in MongoDB
+    // Save to MongoDB
     const contact = await Contact.create({
       name,
       email,
@@ -18,6 +17,7 @@ router.post("/contact", async (req, res) => {
 
     console.log("✅ Contact Saved");
 
+    // Create transporter
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",
       port: 587,
@@ -26,37 +26,34 @@ router.post("/contact", async (req, res) => {
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS,
       },
+      connectionTimeout: 10000,
+      greetingTimeout: 10000,
+      socketTimeout: 10000,
     });
 
-    try {
+    console.log("EMAIL_USER:", process.env.EMAIL_USER);
+    console.log(
+      "EMAIL_PASS:",
+      process.env.EMAIL_PASS ? "FOUND" : "MISSING"
+    );
 
-      await transporter.sendMail({
-        from: process.env.EMAIL_USER,
-        to: process.env.EMAIL_USER,
-        subject: "New Contact Form Submission",
+    console.log("Before sendMail");
 
-        html: `
-          <h2>New Inquiry Received</h2>
+    const info = await transporter.sendMail({
+      from: process.env.EMAIL_USER,
+      to: process.env.EMAIL_USER,
+      subject: "New Contact Form Submission",
+      html: `
+        <h2>New Inquiry Received</h2>
 
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Message:</strong> ${message}</p>
-        `,
-      });
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Message:</strong> ${message}</p>
+      `,
+    });
 
-      console.log("✅ Email Sent");
-
-    } catch (mailError) {
-
-      console.log("❌ MAIL ERROR");
-      console.log(mailError);
-
-      return res.status(500).json({
-        success: false,
-        message: mailError.message,
-      });
-
-    }
+    console.log("After sendMail");
+    console.log("Email Info:", info);
 
     res.status(201).json({
       success: true,
@@ -66,7 +63,7 @@ router.post("/contact", async (req, res) => {
 
   } catch (error) {
 
-    console.log("❌ CONTACT ERROR");
+    console.log("❌ CONTACT/NODEMAILER ERROR");
     console.log(error);
 
     res.status(500).json({
