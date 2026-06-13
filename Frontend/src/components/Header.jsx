@@ -77,6 +77,17 @@ export default function Header() {
     ></span>
   </Link>
 
+   <Link
+  to="/products"
+  className="relative group tracking-wide"
+>
+  Products
+
+  <span
+    className="absolute left-0 -bottom-1 w-0 h-[1.5px] bg-black transition-all duration-300 group-hover:w-full"
+  ></span>
+</Link>
+
   <Link
     to="/contact"
     className="relative group tracking-wide"
@@ -123,6 +134,14 @@ export default function Header() {
               className="hover:text-gray-500 transition"
             >
               Services
+            </Link>
+
+            <Link
+              to="/products"
+              onClick={() => setMenuOpen(false)}
+              className="hover:text-gray-500 transition"
+            >
+              Products
             </Link>
 
             <Link

@@ -1,16 +1,16 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { fadeUp } from "../animations";
-import { Link } from "react-router-dom";
-import img25 from "../img/img25.jpeg";
-import img26 from "../img/img26.jpeg";
-import img27 from "../img/img27.jpeg";
+import img14 from "../img/img14.jpeg";
+import img10 from "../img/img10.jpeg";
+import img2 from "../img/img2.jpeg";
 
 export default function Hero() {
   const images = [
-    img25,
-    img26,
-    img27
+    img14,
+    img10,
+    img2
   ];
 
   const [index, setIndex] = useState(0);
@@ -55,23 +55,24 @@ export default function Hero() {
         </p>
 
         <div className="mt-6 flex gap-4">
-          <button className="bg-white text-black px-6 py-2 rounded hover:scale-105 transition">
-            <Link
-              to="/about"
-              className="hover:text-gray-500 transition"
-            >
-              About Us →
-            </Link>
-          </button>
 
-          <button className="border px-6 py-2 rounded hover:bg-white hover:text-black transition">
-            <Link to="/product"
-            className="hover:text-gray-500 transition"
-            > 
-            Products →
-            </Link>
-          </button>
-        </div>
+  <Link
+    to="/about"
+    className="bg-white text-black px-8 py-3 rounded-md font-medium
+               hover:scale-105 transition duration-300"
+  >
+    About Us →
+  </Link>
+
+  <Link
+    to="/products"
+    className="border border-white px-8 py-3 rounded-md font-medium
+               hover:bg-white hover:text-black transition duration-300"
+  >
+    Products →
+  </Link>
+
+</div>
 
       </motion.div>
 
