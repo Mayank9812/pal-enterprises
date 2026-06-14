@@ -1,8 +1,12 @@
 const express = require("express");
 const Contact = require("../models/Contact");
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
 const router = express.Router();
+
+const resend = new Resend(
+  process.env.RESEND_API_KEY
+);
 
 router.post("/contact", async (req, res) => {
   try {
@@ -17,29 +21,10 @@ router.post("/contact", async (req, res) => {
 
     console.log("✅ Contact Saved");
 
-    // Create transporter
-    const transporter = nodemailer.createTransport({
-  host: "smtp.gmail.com",
-  port: 465,
-  secure: true,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS,
-  },
-  family: 4,
-});
-
-    console.log("EMAIL_USER:", process.env.EMAIL_USER);
-    console.log(
-      "EMAIL_PASS:",
-      process.env.EMAIL_PASS ? "FOUND" : "MISSING"
-    );
-
-    console.log("Before sendMail");
-
-    const info = await transporter.sendMail({
-      from: process.env.EMAIL_USER,
-      to: process.env.EMAIL_USER,
+    // Send Email
+    await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: "palenterprises014@gmail.com",
       subject: "New Contact Form Submission",
       html: `
         <h2>New Inquiry Received</h2>
@@ -50,8 +35,7 @@ router.post("/contact", async (req, res) => {
       `,
     });
 
-    console.log("After sendMail");
-    console.log("Email Info:", info);
+    console.log("✅ Email Sent");
 
     res.status(201).json({
       success: true,
@@ -61,7 +45,7 @@ router.post("/contact", async (req, res) => {
 
   } catch (error) {
 
-    console.log("❌ CONTACT/NODEMAILER ERROR");
+    console.log("❌ ERROR");
     console.log(error);
 
     res.status(500).json({
